@@ -10,7 +10,7 @@ module.exports = router;
 
 const menuController = require('../controllers/menuController');
 
-router.get('/menu', menuController.getMenu);
+router.get('/restaurants/:id/menu', menuController.getMenuByRestaurant); 
 
 const orderController = require('../controllers/orderController');
 

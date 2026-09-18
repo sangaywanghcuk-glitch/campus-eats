@@ -1,10 +1,6 @@
-exports.getHome = (req, res) => {
-  const restaurants = [
-    { name: 'College Cafeteria', cuisine: 'Bhutanese', rating: 4.5 },
-    { name: 'Village Restaurant', cuisine: 'Indian', rating: 4.2 },
-    { name: 'Restro', cuisine: 'Continental', rating: 4.7 },
-    { name: 'NC', cuisine: 'Tibetan', rating: 4.6 },
-  ];
+const Restaurant = require('../models/Restaurant'); 
 
-  res.render('index', { title: 'Campus Eats', restaurants });
+exports.getHome = async (req, res) => { 
+    const restaurants = await Restaurant.getAllRestaurants(); 
+    res.render('index', { title: 'Campus Eats', restaurants }); 
 };

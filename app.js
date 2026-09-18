@@ -22,3 +22,9 @@ app.listen(PORT, () => {
 });
 
 app.use(express.urlencoded({ extended: true }));
+
+const db = require('./config/db'); 
+app.get('/db-test', async (req, res) => { 
+  const result = await db.one('SELECT NOW() AS current_time'); 
+  res.json(result); 
+}); 
