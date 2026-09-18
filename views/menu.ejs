@@ -8,6 +8,9 @@
 <h3><%= item.name %></h3> 
 <span class="price">Nu. <%= item.price %></span> 
 <form method="POST" action="/orders"> 
+  <input type="hidden" name="itemId" value="<%= item.id %>"> 
+  <button type="submit" class="btn">Order Now</button> 
+</form>
 <input type="hidden" name="itemName" value="<%= item.name %>"> 
 <input type="hidden" name="price" value="<%= item.price %>"> 
 <button type="submit" class="btn">Order Now</button> 

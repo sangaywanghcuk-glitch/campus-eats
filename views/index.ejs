@@ -5,6 +5,23 @@
   <h1>Welcome to Campus Eats</h1>
   <p>Order from multiple restaurants, all in one place.</p>
 </section>
+  <p><strong><%= stats.total_orders %></strong> orders placed · Nu. <strong><%= 
+stats.total_revenue %></strong> in sales</p> 
+</section> 
+ 
+<% if (popularItems.length > 0) { %> 
+  <section class="popular"> 
+    <h2>Popular Right Now</h2> 
+    <div class="popular-grid"> 
+      <% popularItems.forEach(item => { %> 
+        <div class="popular-item"> 
+          <h3><%= item.name %></h3> 
+          <span class="rating-pill"><%= item.times_ordered %> ordered</span> 
+        </div> 
+      <% }); %> 
+    </div> 
+  </section> 
+<% } %> 
 
 <section class="restaurants">
   <h2>Popular Restaurants</h2>
