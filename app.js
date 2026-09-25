@@ -13,6 +13,9 @@ app.set('views', path.join(__dirname, 'views'));
 // Static files (CSS, client-side JS)
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Routes
 const indexRoutes = require('./routes/index');
 app.use('/', indexRoutes);
