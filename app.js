@@ -22,9 +22,14 @@ app.listen(PORT, () => {
 });
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const db = require('./config/db'); 
 app.get('/db-test', async (req, res) => { 
   const result = await db.one('SELECT NOW() AS current_time'); 
   res.json(result); 
 }); 
+
+const apiRoutes = require('./routes/api');
+app.use('/api', apiRoutes);
+
