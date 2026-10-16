@@ -52,3 +52,14 @@ exports.getPopularItems = () => {
     LIMIT 3 
   `); 
 };
+
+exports.createOrder = (menuItemId, price, customerId) => {
+  return db.tx(async (t) => {
+    const order = await t.one(
+      'INSERT INTO orders (menu_item_id, quantity, price_at_order, customer_id) VALUES ($1, 1, $2, $3) RETURNING *',
+      [menuItemId, price, customerId]
+    );
+    await t.none('UPDATE menu_items SET times_ordered = times_ordered + 1 WHERE id = $1', [menuItemId]);
+    return order;
+  });
+};

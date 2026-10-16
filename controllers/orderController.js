@@ -1,5 +1,5 @@
-const Order = require('../models/Order');
 const MenuItem = require('../models/MenuItem');
+const Order = require('../models/Order');
 
 exports.createOrder = async (req, res) => {
   const { itemId } = req.body;
@@ -9,7 +9,7 @@ exports.createOrder = async (req, res) => {
     return res.status(400).send('Invalid menu item.');
   }
 
-  const order = await Order.createOrder(item.id, item.price);
+  const order = await Order.createOrder(item.id, item.price, req.session.user.id);
   res.redirect(`/orders/${order.id}`);
 };
 
@@ -18,16 +18,15 @@ exports.getOrder = async (req, res) => {
   if (!order) {
     return res.status(404).send('Order not found.');
   }
-  res.render('order_confirmation', { title: 'Order Confirmed', order });
+  res.render('order-details', { title: 'Order Details', order });
 };
 
 exports.updateOrder = async (req, res) => {
-  const quantity = Math.max(1, parseInt(req.body.quantity, 10) || 1);
-  await Order.updateQuantity(req.params.id, quantity);
-  res.redirect(`/orders/${req.params.id}`);
+  // Add your order update logic here
+  res.redirect('back');
 };
 
 exports.cancelOrder = async (req, res) => {
-  await Order.cancelOrder(req.params.id);
-  res.redirect('/');
+  // Add your order cancellation logic here
+  res.redirect('back');
 };

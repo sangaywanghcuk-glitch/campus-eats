@@ -13,26 +13,36 @@ app.set('views', path.join(__dirname, 'views'));
 // Static files (CSS, client-side JS)
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Body parsers
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Routes
-const indexRoutes = require('./routes/index');
-app.use('/', indexRoutes);
+// Session middleware (Must be placed BEFORE routes)
+const session = require('express-session');
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'campus-eats-dev-secret',
+  resave: false,
+  saveUninitialized: false,
+}));
 
-app.listen(PORT, () => {
-  console.log(`Campus Eats running at http://localhost:${PORT}`);
+// Make the logged-in user available to every view automatically
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
 });
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// Connect MongoDB once when the server starts
+const { connectMongo } = require('./config/mongo');
+connectMongo().catch(err => console.error('MongoDB connection failed:', err));
 
-const db = require('./config/db'); 
-app.get('/db-test', async (req, res) => { 
-  const result = await db.one('SELECT NOW() AS current_time'); 
-  res.json(result); 
-}); 
+// Routes (Must be placed AFTER middleware)
+const indexRoutes = require('./routes/index');
+app.use('/', indexRoutes);
 
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
+// Server startup (Must be at the very bottom)
+app.listen(PORT, () => {
+  console.log(`Campus Eats running at http://localhost:${PORT}`);
+});
