@@ -7,9 +7,14 @@ let db;
 async function connectMongo() {
   if (db) return db;
   await client.connect();
-  db = client.db('campus_eats_feedback');
-  console.log('Connected to MongoDB (campus_eats_feedback)');
+  db = client.db(process.env.MONGO_DB_NAME || 'campus_eats_feedback');
+  console.log(`Connected to MongoDB (${db.databaseName})`);
   return db;
 }
 
-module.exports = { connectMongo };
+async function closeMongo() {
+  await client.close();
+  db = undefined;
+}
+
+module.exports = { connectMongo, closeMongo };

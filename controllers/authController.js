@@ -1,8 +1,7 @@
 const crypto = require('crypto');
 const User = require('../models/User');
 const { sendVerificationEmail, sendPasswordResetEmail } = require('../config/mailer');
-
-const EMAIL_SUFFIX = '07240081.sherubtse@rub.edu.bt';
+const { isValidSherubtseEmail, EMAIL_SUFFIX } = require('../utils/validators');
 
 exports.showSignup = (req, res) => res.render('signup', { title: 'Sign Up', error: null });
 
@@ -13,7 +12,7 @@ exports.signup = async (req, res) => {
     return res.render('signup', { title: 'Sign Up', error: 'All fields are required.' });
   }
 
-  if (!email.toLowerCase().endsWith(EMAIL_SUFFIX)) {
+  if (!isValidSherubtseEmail(email)) {
     return res.render('signup', {
       title: 'Sign Up',
       error: `Please use your Sherubtse College email, ending in ${EMAIL_SUFFIX}.`,

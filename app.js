@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // View engine
 app.set('view engine', 'ejs');
@@ -31,9 +30,11 @@ app.use((req, res, next) => {
   next();
 });
 
-// Connect MongoDB once when the server starts (Part F)
+// Connect MongoDB once when the server starts, but skip during tests
 const { connectMongo } = require('./config/mongo');
-connectMongo().catch(err => console.error('MongoDB connection failed:', err));
+if (process.env.NODE_ENV !== 'test') {
+  connectMongo().catch(err => console.error('MongoDB connection failed:', err));
+}
 
 // Routes (Must be placed AFTER middleware)
 const indexRoutes = require('./routes/index');
@@ -42,7 +43,5 @@ app.use('/', indexRoutes);
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
-// Server startup (Must be at the very bottom)
-app.listen(PORT, () => {
-  console.log(`Campus Eats running at http://localhost:${PORT}`);
-});
+// Export the app for testing (no app.listen here)
+module.exports = app;
