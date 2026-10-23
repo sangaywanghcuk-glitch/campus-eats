@@ -9,6 +9,7 @@ const authController = require('../controllers/authController');
 const superAdminController = require('../controllers/superAdminController');
 const menuController = require('../controllers/menuController');
 const orderController = require('../controllers/orderController'); 
+const feedbackController = require('../controllers/feedbackController'); // Added for Lab 8[cite: 1]
 
 // Middleware
 const { requireAuth, requireAdmin, requireSuperAdmin } = require('../middleware/auth');
@@ -17,8 +18,9 @@ const { requireAuth, requireAdmin, requireSuperAdmin } = require('../middleware/
 router.get('/', homeController.getHome);
 router.get('/about', aboutController.getAbout);
 
-// Menu Routes
+// Menu & Feedback Routes
 router.get('/restaurants/:id/menu', menuController.getMenuByRestaurant); 
+router.post('/restaurants/:id/feedback', feedbackController.submitFeedback); // Added for Lab 8[cite: 1]
 
 // Order Routes
 router.post('/orders', requireAuth, orderController.createOrder);

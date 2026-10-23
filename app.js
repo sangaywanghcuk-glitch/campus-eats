@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Connect MongoDB once when the server starts
+// Connect MongoDB once when the server starts (Part F)
 const { connectMongo } = require('./config/mongo');
 connectMongo().catch(err => console.error('MongoDB connection failed:', err));
 
